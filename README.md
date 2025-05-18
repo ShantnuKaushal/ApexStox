@@ -32,3 +32,12 @@ This repository contains the source code for **ApexStox**, an app built with Vit
 git clone https://github.com/ShantnuKaushal/ApexStox.git
 cd ApexStox
 npm install
+```
+### Create a .env.local file in the project root with your Finnhub key:
+```bash
+VITE_FINNHUB_API_KEY=your_finnhub_api_key_here
+```
+### Run Locally
+```bash
+npm run dev
+```

@@ -1,20 +1,45 @@
+/* src/styles/dashboard.css */
+
 .dashboard {
   display: flex;
   height: 100vh;
+  background: #f5f7fa;
 }
 
 .dashboard__sidebar {
   width: 320px;
   padding: 1.5rem;
-  background: var(--card-bg);
+  background: #c5c3c3;
   border-right: 1px solid #e0e0e0;
   overflow-y: auto;
+  box-shadow: 2px 0 6px rgba(0, 0, 0, 0.05);
 }
 
 .dashboard__detail {
   flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 2rem;
-  background: var(--surface-light);
+  /* base grey */
+  background: #9c9c9d;
+  /* diamond-mesh overlay */
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.08) 0,
+      rgba(255, 255, 255, 0.08) 2px,
+      transparent 2px,
+      transparent 80px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      rgba(255, 255, 255, 0.08) 0,
+      rgba(255, 255, 255, 0.08) 2px,
+      transparent 2px,
+      transparent 80px
+    );
+  background-blend-mode: overlay, overlay;
   overflow-y: auto;
 }
 
@@ -22,6 +47,6 @@
 .dashboard__error {
   width: 100%;
   text-align: center;
-  margin-top: 3rem;
   font-size: 1.5rem;
+  margin-top: 3rem;
 }

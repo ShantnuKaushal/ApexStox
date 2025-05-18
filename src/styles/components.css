@@ -1,15 +1,20 @@
+
 :root {
   /* color palette */
   --bg-gradient-start: #1e3c72;
   --bg-gradient-end:   #2a5298;
   --surface-light:     #f5f7fa;
   --card-bg:           #ffffff;
-  --card-hover:        #f0f0f0;
-  --tracked-bg:        #e0f7fa;
+  --card-hover:        #c3c7c7;
+  --tracked-bg:        #7fcdd9;
   --primary:           #7289da;
   --accent:            #ff6b6b;
   --text-primary:      #ffffff;
   --text-secondary:    #2f3136;
+
+  /* positive/negative colors */
+  --positive:  #28a745;
+  --negative:  #dc3545;
 }
 
 body {
@@ -19,14 +24,15 @@ body {
   color: var(--text-secondary);
 }
 
-/* Carousel images share this object‐fit rule */
+/* Carousel images */
 .carousel__img {
   object-fit: cover;
 }
 
-/* Search input & dropdown */
+/* Search & Filter */
 .search-bar,
 .filter-dropdown {
+  box-sizing: border-box;
   width: 100%;
   padding: 0.75rem 1rem;
   margin-bottom: 1rem;
@@ -41,7 +47,20 @@ body {
   border-color: var(--primary);
 }
 
-/* Stock list rows */
+/* Custom arrow on dropdown */
+.filter-dropdown {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: #fff;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath fill='%23666' d='M6 8l6-8H0z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 2.5rem;
+  cursor: pointer;
+}
+
+/* Stock list */
 .stock-list {
   list-style: none;
   padding: 0;
@@ -56,8 +75,15 @@ body {
   margin-bottom: 0.5rem;
   background: var(--card-bg);
   border-radius: 1rem;
+  border: 1px solid #e0e0e0;
   transition: background 0.2s ease, transform 0.1s ease;
   cursor: pointer;
+  border: 3px solid rgba(0, 0, 0, .6);
+}
+
+.stock-list__item:hover {
+  background: var(--card-hover);
+  transform: translateY(-2px);
 }
 
 .stock-list__item--tracked {
@@ -65,12 +91,7 @@ body {
 }
 
 .stock-list__item--selected {
-  border-left: 4px solid var(--primary);
-}
-
-.stock-list__item:hover {
-  background: var(--card-hover);
-  transform: translateY(-2px);
+  border: 4px solid var(--primary);
 }
 
 .stock-list__toggle {
@@ -81,20 +102,57 @@ body {
   cursor: pointer;
 }
 
-/* Stock detail card */
-.stock-detail {
-  background: var(--card-bg);
-  border-radius: 1rem;
-  padding: 2rem;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+/* Change coloring */
+.stock-list__change {
+  margin-left: 0.5rem;
+  font-weight: 500;
+}
+.stock-list__change--positive {
+  color: var(--positive);
+}
+.stock-list__change--negative {
+  color: var(--negative);
 }
 
+/* Stock detail card – now with a defined border */
+.stock-detail {
+  background: var(--card-bg);
+  border: 3px solid rgba(0, 0, 0, .6);  /* ← added for definition */
+  border-radius: 1rem;
+  padding: 2.5rem;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  width: 100%;
+  max-width: 800px;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  column-gap: 2rem;
+  row-gap: 1.5rem;
+}
+
+
 .stock-detail h2 {
-  margin-top: 0;
+  grid-column: 1 / -1;
+  margin: 0 0 1rem;
+  font-size: 1.75rem;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.stock-detail__symbol {
+  grid-column: 1 / -1;
+  font-size: 1.1rem;
+  color: #888888;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  margin-top: -20px;
 }
 
 .stock-detail p {
-  margin: 0.5rem 0;
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
 }
 
 /* Tracking banner */

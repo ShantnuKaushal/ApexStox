@@ -22,7 +22,7 @@ export default function LandingPage() {
       <div className="landing__cta">
         <h1 className="landing__title">Welcome to StockTracker</h1>
         <p className="landing__subtitle">
-          Monitor the top 50 stocks in real time — all in one place.
+          The Top 50 Stocks In Real Time  All In One Place
         </p>
         <button
           className="landing__button"

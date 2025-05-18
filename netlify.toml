@@ -2,3 +2,11 @@
   command   = "npm run build"
   publish   = "dist"
   functions = "netlify/functions"
+
+[dev]
+  # the command to start your front‐end
+  command    = "npm run dev"
+  # where Netlify Dev will serve your app (you can hit http://localhost:8888)
+  port       = 8888
+  # the port Vite actually binds to (defaults to 3000 per your vite.config.js)
+  targetPort = 3000

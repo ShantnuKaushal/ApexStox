@@ -25,3 +25,6 @@ dist-ssr
 
 # local env files (contains secrets – do NOT commit)
 .env.local
+
+# Local Netlify folder
+.netlify

@@ -1,13 +1,9 @@
 # ApexStox
 
-This repository contains the source code for **ApexStox**, a two-page React app built with Vite, React, HTML, CSS, and JavaScript. It lets users monitor the top 50 public companies by market cap in real time, filter and search among them, and “track” favorites—all in one place.
+This repository contains the source code for **ApexStox**, an app built with Vite + React, HTML, CSS, and JavaScript. It lets users monitor the top 50 public companies by market cap in real time, filter and search among them, and “track” favorites all in one place.
 
 ## Features
-
-- **Landing Page**  
-  Full-screen carousel of finance-themed images with smooth fade transitions and a stylized “Get Started” call to action.
-
-- **Dashboard**  
+  **Dashboard**  
   - **Stock List**: Displays the top 50 tickers with current price and daily percent change. Users can search, filter (all / tracked / untracked), and click “+” to track or “×” to untrack. Tracked items highlight in a distinct background.  
   - **Detail Pane**: Shows full quote data (price, high, low, open, prev close) and company logo for the selected ticker. Data refreshes on a 10-minute interval.  
   - **Tracking Banner**: Toast-style notification when a stock is added or removed from your tracked list.  

@@ -1,9 +1,7 @@
-// after: no key in the browser; Netlify handles it for you
 const BASE = '/.netlify/functions';
 
 export async function fetchQuote(symbol) {
-  const url = `${BASE}/quote?symbol=${encodeURIComponent(symbol)}`;
-  const res = await fetch(url);
+  const res = await fetch(`${BASE}/quote?symbol=${encodeURIComponent(symbol)}`);
   if (!res.ok) throw new Error(`Quote error for ${symbol}: ${res.statusText}`);
   return res.json();
 }

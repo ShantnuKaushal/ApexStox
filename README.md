@@ -1,6 +1,6 @@
 # ApexStox
 
-This repository contains the source code for **StockTracker**, a two-page React app built with Vite, React, HTML, CSS, and JavaScript. It lets users monitor the top 50 public companies by market cap in real time, filter and search among them, and “track” favorites—all in one place.
+This repository contains the source code for **ApexStox**, a two-page React app built with Vite, React, HTML, CSS, and JavaScript. It lets users monitor the top 50 public companies by market cap in real time, filter and search among them, and “track” favorites—all in one place.
 
 ## Features
 
@@ -34,6 +34,6 @@ This repository contains the source code for **StockTracker**, a two-page React 
 ### Clone & Install
 
 ```bash
-git clone https://github.com/ShantnuKaushal/StockTracker.git
-cd StockTracker
+git clone https://github.com/ShantnuKaushal/ApexStox.git
+cd ApexStox
 npm install

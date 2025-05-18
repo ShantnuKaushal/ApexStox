@@ -1,0 +1,108 @@
+/* src/styles/landing.css */
+
+.landing {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Carousel pane (2/3 width) with purple tint overlay */
+.landing__carousel {
+  flex: 2;
+  position: relative;
+  overflow: hidden;
+}
+
+.landing__carousel::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* slide images stacked underneath the tint */
+.carousel {
+  width: 100%; height: 100%;
+  position: relative;
+}
+
+.carousel__img {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.carousel__img--visible {
+  opacity: 1;
+  z-index: 0; /* behind the tint */
+}
+
+/* CTA pane (1/3 width) with deep purple background and slanted edge */
+.landing__cta {
+  flex: 1;
+  position: relative;
+  background: #5b2e7a;  /* deep purple */
+  /* carve out a 30px slanted left edge */
+  clip-path: polygon(30px 0, 100% 0, 100% 100%, 0 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+/* soft white spotlight behind your text/button */
+.landing__cta::before {
+  content: '';
+  position: absolute;
+  width: 250px; height: 250px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  top: 20%; left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* bring your actual content above both tint & spotlight */
+.landing__title,
+.landing__subtitle,
+.landing__button {
+  position: relative;
+  z-index: 1;
+  color: #ffffff; /* white text on purple */
+}
+
+.landing__title {
+  font-size: 2.5rem;
+  margin: 0;
+}
+
+.landing__subtitle {
+  margin: 1rem 0 2rem;
+  font-size: 1.2rem;
+  text-align: center;
+  max-width: 300px;
+}
+
+.landing__button {
+  background: #ff6b6b; /* your accent color */
+  color: #ffffff;
+  font-size: 1.25rem;
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.landing__button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}

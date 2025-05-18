@@ -4,11 +4,10 @@ This repository contains the source code for **ApexStox**, an app built with Vit
 
 ## Features
   **Dashboard**  
-  - **Stock List**: Displays the top 50 tickers with current price and daily percent change. Users can search, filter (all / tracked / untracked), and click “+” to track or “×” to untrack. Tracked items highlight in a distinct background.  
+  - **Stock List**: Displays the top 50 tickers sorted by market cap with current price and daily percent change. Users can search, filter (all / tracked / untracked), and click “+” to track or “×” to untrack. Tracked items highlight in a distinct background.  
   - **Detail Pane**: Shows full quote data (price, high, low, open, prev close) and company logo for the selected ticker. Data refreshes on a 10-minute interval.  
-  - **Tracking Banner**: Toast-style notification when a stock is added or removed from your tracked list.  
-  - **Footer**: A copyright notice pinned at the bottom of each pane.
-
+  - **Tracking Banner**: Toast-style notification when a stock is added or removed from your tracked list.
+    
 - **Responsive & Modern UI**  
   Uses CSS variables, clip-paths, subtle gradients, and mesh overlays for a unique, polished aesthetic. Components animate on hover, and layouts adapt gracefully to different screen sizes.
 
@@ -24,7 +23,7 @@ This repository contains the source code for **ApexStox**, an app built with Vit
 
 ### Prerequisites
 
-- Node.js v16+  
+- Node.js (Latest Version)  
 - A Finnhub API key (sign up at https://finnhub.io/)  
 
 ### Clone & Install

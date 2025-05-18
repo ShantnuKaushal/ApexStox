@@ -1,6 +1,5 @@
 
 :root {
-  /* color palette */
   --bg-gradient-start: #1e3c72;
   --bg-gradient-end:   #2a5298;
   --surface-light:     #f5f7fa;
@@ -12,7 +11,6 @@
   --text-primary:      #ffffff;
   --text-secondary:    #2f3136;
 
-  /* positive/negative colors */
   --positive:  #28a745;
   --negative:  #dc3545;
 }
@@ -102,7 +100,7 @@ body {
   cursor: pointer;
 }
 
-/* Change coloring */
+
 .stock-list__change {
   margin-left: 0.5rem;
   font-weight: 500;
@@ -114,10 +112,10 @@ body {
   color: var(--negative);
 }
 
-/* Stock detail card – now with a defined border */
+/* Stock detail card */
 .stock-detail {
   background: var(--card-bg);
-  border: 3px solid rgba(0, 0, 0, .6);  /* ← added for definition */
+  border: 3px solid rgba(0, 0, 0, .6);  
   border-radius: 1rem;
   padding: 2.5rem;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
@@ -172,4 +170,58 @@ body {
 @keyframes fadeInOut {
   0%, 100% { opacity: 0; }
   10%, 90% { opacity: 1; }
+}
+
+
+
+.stock-list__logo {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  margin-right: 0.75rem;
+  border-radius: 50%;    
+}
+
+
+.stock-list__info {
+  display: flex;
+  align-items: center;
+}
+
+
+.stock-detail__logo {
+  grid-column: 1 / -1;
+  justify-self: center;
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  margin-bottom: 1rem;
+}
+
+/* stack symbol over price */
+.stock-list__meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.stock-list__symbol {
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.stock-list__price {
+  margin-top: 0.25rem;
+  color: var(--text-secondary);
+  font-size: 0. ninerem;
+}
+
+
+.stock-list__change {
+  margin-left: auto;
+  margin-right: 0.5rem;
+  white-space: nowrap;
+}
+
+.stock-list__toggle {
+  flex-shrink: 0;
 }

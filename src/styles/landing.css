@@ -6,14 +6,13 @@
   overflow: hidden;
 }
 
-/* Carousel pane (2/3 width) */
 .landing__carousel {
   flex: 2;
   position: relative;
   overflow: hidden;
 }
 
-/* fade‐in/out slides */
+/* fade‐in*/
 .carousel {
   width: 100%;
   height: 100%;
@@ -31,7 +30,6 @@
   opacity: 1;
 }
 
-/* CTA pane with mesh and slanted edge */
 .landing__cta {
   flex: 1;
   position: relative;
@@ -62,7 +60,7 @@
   background-blend-mode: overlay, overlay, normal;
 }
 
-/* Title & subtitle get the black outline */
+
 .landing__title,
 .landing__subtitle {
   position: relative;
@@ -81,14 +79,14 @@
 }
 
 .landing__subtitle {
-  margin: 1rem 0 3rem;    /* extra bottom space */
+  margin: 1rem 0 3rem;    
   font-size: 1.2rem;
-  line-height: 1.8;       /* more breathing room between lines */
+  line-height: 1.8;       
   text-align: center;
   max-width: 300px;
 }
 
-/* Button loses its outline and keeps no text‐shadow */
+
 .landing__button {
   position: relative;
   z-index: 1;

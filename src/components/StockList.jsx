@@ -1,48 +1,66 @@
-// src/components/StockList.jsx
 import React from 'react';
 
 export default function StockList({
   stocks,
   tracked,
-  onToggle,
   onSelect,
+  onToggle,
   selected
 }) {
   return (
     <ul className="stock-list">
-      {stocks.map(s => {
-        const pct = parseFloat(s.changePct);
-        const changeClass =
-          pct >= 0
-            ? 'stock-list__change--positive'
-            : 'stock-list__change--negative';
+      {stocks.map(stock => {
+        const isTracked  = tracked.has(stock.symbol);
+        const isSelected = stock.symbol === selected;
 
         return (
           <li
-            key={s.symbol}
-            className={[
-              'stock-list__item',
-              tracked.has(s.symbol) && 'stock-list__item--tracked',
-              s.symbol === selected && 'stock-list__item--selected'
-            ]
-              .filter(Boolean)
-              .join(' ')}
-            onClick={() => onSelect(s.symbol)}
+            key={stock.symbol}
+            className={
+              'stock-list__item' +
+              (isTracked  ? ' stock-list__item--tracked'  : '') +
+              (isSelected ? ' stock-list__item--selected' : '')
+            }
+            onClick={() => onSelect(stock.symbol)}
           >
-            <div>
-              <strong>{s.symbol}</strong> {s.current.toFixed(2)}
-              <span className={`stock-list__change ${changeClass}`}>
-                ({s.changePct}%)
-              </span>
+            <div className="stock-list__info">
+              {stock.logo && (
+                <img
+                  src={stock.logo}
+                  alt={`${stock.symbol} logo`}
+                  className="stock-list__logo"
+                  onError={e => { e.currentTarget.style.display = 'none'; }}
+                />
+              )}
+              <div className="stock-list__meta">
+                <span className="stock-list__symbol">
+                  {stock.symbol}
+                </span>
+                <span className="stock-list__price">
+                  {stock.current.toFixed(2)}
+                </span>
+              </div>
             </div>
+
+            <span
+              className={
+                'stock-list__change ' +
+                (stock.changePct >= 0
+                  ? 'stock-list__change--positive'
+                  : 'stock-list__change--negative')
+              }
+            >
+              ({stock.changePct}%)
+            </span>
+
             <button
               className="stock-list__toggle"
               onClick={e => {
                 e.stopPropagation();
-                onToggle(s.symbol);
+                onToggle(stock.symbol);
               }}
             >
-              {tracked.has(s.symbol) ? '×' : '+'}
+              {isTracked ? '×' : '+'}
             </button>
           </li>
         );

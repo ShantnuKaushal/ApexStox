@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { fetchQuote, fetchProfile } from '../api';
-import { TOP50, SYMBOL_NAME_MAP }     from '../symbols';
+import { TOP15, SYMBOL_NAME_MAP }     from '../symbols';
 import SearchBar                      from '../components/SearchBar';
 import FilterDropdown                 from '../components/FilterDropdown';
 import StockList                      from '../components/StockList';
@@ -24,7 +24,7 @@ export default function Dashboard() {
     (async () => {
       const map = {};
       await Promise.all(
-        TOP50.map(async sym => {
+        TOP15.map(async sym => {
           try {
             const p = await fetchProfile(sym);
             map[sym] = p;
@@ -50,8 +50,8 @@ export default function Dashboard() {
 
     const results = [];
     const chunkSize = 30;
-    for (let i = 0; i < TOP50.length; i += chunkSize) {
-      const slice = TOP50.slice(i, i + chunkSize);
+    for (let i = 0; i < TOP15.length; i += chunkSize) {
+      const slice = TOP15.slice(i, i + chunkSize);
       const chunkResults = await Promise.all(
         slice.map(async sym => {
           try {
@@ -65,7 +65,7 @@ export default function Dashboard() {
       
       chunkResults.forEach(q => q && results.push(q));
       setCount(c => c + chunkResults.filter(q => q).length);
-      if (i + chunkSize < TOP50.length) {
+      if (i + chunkSize < TOP15.length) {
         
         await new Promise(r => setTimeout(r, 1000));
       }
@@ -74,7 +74,7 @@ export default function Dashboard() {
     setQuotes(results);
     
     if (!selected && results.length) {
-      setSelected(TOP50[0]);
+      setSelected(TOP15[0]);
     }
   };
 
@@ -86,7 +86,7 @@ export default function Dashboard() {
 
   // merge quote + profile into final data array
   const data = quotes.map((q, i) => {
-    const sym  = TOP50[i];
+    const sym  = TOP15[i];
     const prof = profiles[sym] || {};
     return {
       symbol:    sym,
@@ -129,7 +129,7 @@ export default function Dashboard() {
   if (!quotes.length) {
     return (
       <div className="dashboard__loading">
-        Loading… {loadedCount} of {TOP50.length}
+        Loading… {loadedCount} of {TOP15.length}
       </div>
     );
   }

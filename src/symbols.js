@@ -1,10 +1,8 @@
 // src/symbols.js
-export const TOP50 = [
-  'MSFT','NVDA','AAPL','AMZN','META','AVGO','TSLA','GOOGL','BRK.B','GOOG',
-  'JPM','V','LLY','NFLX','MA','XOM','COST','WMT','PG','HD',
-  'JNJ','ABBV','BAC','CRM','KO','PM','PLTR','ORCL','CSCO','UNH',
-  'WFC','IBM','GE','CVX','ABT','MCD','LIN','NOW','DIS','ACN',
-  'ISRG','T','GS','MRK','UBER','AMD','INTU','VZ','RTX','PEP'
+export const TOP15 = [
+  'MSFT', 'NVDA', 'AAPL', 'AMZN', 'META',
+  'AVGO', 'TSLA', 'GOOGL', 'BRK.B', 'GOOG',
+  'JPM',  'V',    'LLY',  'NFLX', 'MA'
 ];
 
 export const SYMBOL_NAME_MAP = {

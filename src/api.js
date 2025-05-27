@@ -26,7 +26,7 @@ export async function signup(email, password, password2) {
     body: JSON.stringify({ email, password, password2 })
   });
   const data = await res.json();
-  console.log('✍️ signup response:', data);
+  
   if (!res.ok) throw new Error(data.message || 'Signup failed');
   return data.token;
 }
@@ -38,7 +38,7 @@ export async function login(email, password) {
     body: JSON.stringify({ email, password })
   });
   const data = await res.json();
-  console.log('🔑 login response:', data);
+  
   if (!res.ok) throw new Error(data.message || 'Login failed');
   return data.token;
 }
@@ -48,7 +48,7 @@ export async function fetchTracked(token) {
     headers: { Authorization: `Bearer ${token}` }
   });
   const data = await res.json();
-  console.log('📦 fetchTracked response:', data);
+  
   if (!res.ok) throw new Error(data.message || 'Fetching tracked failed');
   return data.tracked;
 }
@@ -63,7 +63,7 @@ export async function toggleTracked(symbol, token) {
     body: JSON.stringify({ symbol })
   });
   const data = await res.json();
-  console.log('⚙️ toggleTracked response:', data);
+  
   if (!res.ok) throw new Error(data.message || 'Toggling tracked failed');
   return data.tracked;
 }

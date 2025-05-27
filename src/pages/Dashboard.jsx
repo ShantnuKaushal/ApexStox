@@ -1,5 +1,11 @@
+// src/pages/Dashboard.jsx
 import React, { useState, useEffect } from 'react';
-import { fetchQuote, fetchProfile, fetchTracked, toggleTracked } from '../api';
+import {
+  fetchQuote,
+  fetchProfile,
+  fetchTracked,
+  toggleTracked
+} from '../api';
 import { TOP15, SYMBOL_NAME_MAP } from '../symbols';
 import { useNavigate } from 'react-router-dom';
 import SearchBar from '../components/SearchBar';
@@ -128,6 +134,12 @@ export default function Dashboard() {
     }
   };
 
+  // Logout clears token and returns to landing
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/');
+  };
+
   // Apply filter & search
   const filtered = data.filter(item => {
     if (filter === 'tracked'   && !tracked.has(item.symbol)) return false;
@@ -152,6 +164,11 @@ export default function Dashboard() {
 
   return (
     <div className="dashboard">
+      {/* Logout button */}
+      <button className="logout-button" onClick={handleLogout}>
+        Logout
+      </button>
+
       {banner && <TrackingBanner message={banner} />}
 
       <div className="dashboard__sidebar">

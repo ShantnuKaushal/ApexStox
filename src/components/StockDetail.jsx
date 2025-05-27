@@ -5,30 +5,47 @@ export default function StockDetail({ data }) {
 
   return (
     <div className="stock-detail">
-      {}
       {data.logo && (
         <img
           src={data.logo}
           alt={`${data.symbol} logo`}
           className="stock-detail__logo"
           onError={e => { e.currentTarget.style.display = 'none'; }}
-          style={{
-            display: 'block',
-            maxWidth: '100px',
-            margin: '0 auto 1rem'
-          }}
         />
       )}
 
       <h2>{data.name}</h2>
       <div className="stock-detail__symbol">{data.symbol}</div>
 
-      <p>Price: {data.current.toFixed(2)}</p>
-      <p>Change: {data.changePct}%</p>
-      <p>High: {data.high}</p>
-      <p>Low: {data.low}</p>
-      <p>Open: {data.open}</p>
-      <p>Prev Close: {data.prevClose}</p>
+      <div className="stock-detail__grid">
+        {/* First row */}
+        <div className="stock-detail__item">
+          <div className="stock-detail__label">Price</div>
+          <div className="stock-detail__value">{data.current.toFixed(2)}</div>
+        </div>
+        <div className="stock-detail__item">
+          <div className="stock-detail__label">High</div>
+          <div className="stock-detail__value">{data.high}</div>
+        </div>
+        <div className="stock-detail__item">
+          <div className="stock-detail__label">Open</div>
+          <div className="stock-detail__value">{data.open}</div>
+        </div>
+
+        {/* Second row */}
+        <div className="stock-detail__item">
+          <div className="stock-detail__label">Change</div>
+          <div className="stock-detail__value">{data.changePct}%</div>
+        </div>
+        <div className="stock-detail__item">
+          <div className="stock-detail__label">Low</div>
+          <div className="stock-detail__value">{data.low}</div>
+        </div>
+        <div className="stock-detail__item">
+          <div className="stock-detail__label">Prev Close</div>
+          <div className="stock-detail__value">{data.prevClose}</div>
+        </div>
+      </div>
     </div>
   );
 }

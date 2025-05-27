@@ -115,17 +115,19 @@ body {
 /* Stock detail card */
 .stock-detail {
   background: var(--card-bg);
-  border: 3px solid rgba(0, 0, 0, .6);  
+  border: 3px solid rgba(0, 0, 0, .6);
   border-radius: 1rem;
   padding: 2.5rem;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
   width: 100%;
   max-width: 800px;
+  margin: 0 auto;
 
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  column-gap: 2rem;
-  row-gap: 1.5rem;
+  /* switch to a centered vertical stack */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 
@@ -224,4 +226,42 @@ body {
 
 .stock-list__toggle {
   flex-shrink: 0;
+}
+
+.stock-detail__grid {
+  display: grid;
+  /* exactly three columns, each at least 200px wide */
+  grid-template-columns: repeat(3, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+
+  /* center the entire grid inside its container */
+  justify-content: center;
+}
+
+
+.stock-detail__item {
+  /* give each tile a little extra breathing room */
+  padding: 1rem 1.5rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 0.75rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: default;
+}
+
+.stock-detail__item:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.stock-detail__label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.25rem;
+}
+
+.stock-detail__value {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-secondary);
 }

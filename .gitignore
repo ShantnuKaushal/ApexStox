@@ -25,3 +25,6 @@ dist-ssr
 
 # local env files (contains secrets – do NOT commit)
 .env.local
+
+# server env file (contains DB URI & JWT secret)
+​/server/.env

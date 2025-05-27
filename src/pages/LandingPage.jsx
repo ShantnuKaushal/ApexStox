@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Carousel from '../components/Carousel';
+import Footer   from '../components/Footer';
 import '../styles/landing.css';
-
 
 import img1 from '../assets/img1.svg';
 import img2 from '../assets/img2.svg';
@@ -22,7 +22,7 @@ export default function LandingPage() {
       <div className="landing__cta">
         <h1 className="landing__title">Welcome to ApexStox</h1>
         <p className="landing__subtitle">
-          The Top 50 Stocks In Real Time  All In One Place
+          The Top 15 Stocks In Real Time All In One Place
         </p>
         <button
           className="landing__button"
@@ -30,6 +30,9 @@ export default function LandingPage() {
         >
           Get Started
         </button>
+
+        {/* Footer moved inside the CTA, now centered */}
+        <Footer className="footer--landing" />
       </div>
     </div>
   );

@@ -1,15 +1,15 @@
-// src/pages/Signup.jsx
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import Footer from '../components/Footer';
 import '../styles/auth.css';
 import { signup } from '../api';
 
 export default function Signup() {
-  const [email, setEmail]           = useState('');
-  const [password, setPassword]     = useState('');
+  const [email, setEmail]                 = useState('');
+  const [password, setPassword]           = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError]           = useState('');
-  const navigate                    = useNavigate();
+  const [error, setError]                 = useState('');
+  const navigate                          = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,21 +31,21 @@ export default function Signup() {
           type="email"
           placeholder="Email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={e=>setEmail(e.target.value)}
           required
         />
         <input
           type="password"
           placeholder="Password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={e=>setPassword(e.target.value)}
           required
         />
         <input
           type="password"
           placeholder="Confirm Password"
           value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
+          onChange={e=>setConfirmPassword(e.target.value)}
           required
         />
         <button type="submit">Sign Up</button>
@@ -53,6 +53,7 @@ export default function Signup() {
           Already have an account? <Link to="/login">Log in</Link>
         </p>
       </form>
+      <Footer className="footer--auth" />
     </div>
   );
 }

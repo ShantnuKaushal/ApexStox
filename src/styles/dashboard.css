@@ -1,8 +1,10 @@
 
 .dashboard {
+  position: relative;
   display: flex;
   height: 100vh;
   background: #f5f7fa;
+  
 }
 
 .dashboard__sidebar {
@@ -15,6 +17,7 @@
 }
 
 .dashboard__detail {
+  position: relative;
   flex: 1;
   display: flex;
   justify-content: center;

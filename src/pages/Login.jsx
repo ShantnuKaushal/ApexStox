@@ -1,14 +1,14 @@
-// src/pages/Login.jsx
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import Footer from '../components/Footer';
 import '../styles/auth.css';
 import { login } from '../api';
 
 export default function Login() {
-  const [email, setEmail]     = useState('');
+  const [email, setEmail]       = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError]     = useState('');
-  const navigate              = useNavigate();
+  const [error, setError]       = useState('');
+  const navigate                = useNavigate();
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -45,6 +45,7 @@ export default function Login() {
           Don’t have an account? <Link to="/signup">Create one</Link>
         </p>
       </form>
+      <Footer className="footer--auth" />
     </div>
   );
 }

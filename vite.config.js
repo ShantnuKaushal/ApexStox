@@ -6,12 +6,21 @@ export default defineConfig({
   server: {
     port: 3000,
     proxy: {
-      // Proxy /api/v1/* → Finnhub so you don’t get CORS errors
+      // Proxy Finnhub calls through /api/v1 to avoid CORS
       '/api/v1': {
         target: 'https://finnhub.io',
         changeOrigin: true,
         secure: true,
-        rewrite: path => path.replace(/^\/api\/v1/, '/api/v1')
+        rewrite: (path) => path.replace(/^\/api\/v1/, '/api/v1')
+      },
+      // Proxy our auth routes to the Express backend
+      '/auth': {
+        target: 'http://localhost:5000',
+        changeOrigin: true
+      },
+      '/tracked': {
+        target: 'http://localhost:5000',
+        changeOrigin: true
       }
     }
   }

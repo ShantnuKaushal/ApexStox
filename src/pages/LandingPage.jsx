@@ -26,7 +26,7 @@ export default function LandingPage() {
         </p>
         <button
           className="landing__button"
-          onClick={() => navigate('/dashboard')}
+          onClick={() => navigate('/login')}
         >
           Get Started
         </button>

@@ -27,4 +27,4 @@ dist-ssr
 .env.local
 
 # server env file (contains DB URI & JWT secret)
-/server/.env
+.env

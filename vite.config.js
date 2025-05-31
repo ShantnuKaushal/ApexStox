@@ -21,6 +21,11 @@ export default defineConfig({
       '/tracked': {
         target: 'http://localhost:5000',
         changeOrigin: true
+      },
+      // Proxy /quotes to the Express backend’s cached‐quotes endpoint
+      '/quotes': {
+        target: 'http://localhost:5000',
+        changeOrigin: true
       }
     }
   }

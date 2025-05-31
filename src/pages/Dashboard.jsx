@@ -1,18 +1,18 @@
+// src/pages/Dashboard.jsx
 import React, { useState, useEffect } from 'react';
 import {
-  fetchQuote,
   fetchProfile,
   fetchTracked,
   toggleTracked
-} from '../api';
+} from '../api'; // note: no more fetchQuote
 import { TOP15, SYMBOL_NAME_MAP } from '../symbols';
 import { useNavigate } from 'react-router-dom';
-import SearchBar       from '../components/SearchBar';
-import FilterDropdown  from '../components/FilterDropdown';
-import StockList       from '../components/StockList';
-import StockDetail     from '../components/StockDetail';
-import TrackingBanner  from '../components/TrackingBanner';
-import Footer          from '../components/Footer';
+import SearchBar from '../components/SearchBar';
+import FilterDropdown from '../components/FilterDropdown';
+import StockList from '../components/StockList';
+import StockDetail from '../components/StockDetail';
+import TrackingBanner from '../components/TrackingBanner';
+import Footer from '../components/Footer';
 import '../styles/dashboard.css';
 
 export default function Dashboard() {
@@ -20,7 +20,7 @@ export default function Dashboard() {
   const token = localStorage.getItem('token');
 
   const [profiles,    setProfiles]   = useState({});
-  const [quotes,      setQuotes]     = useState([]);
+  const [quotes,      setQuotes]     = useState([]);      // now holds array of { symbol, c, pc, h, l, o, t }
   const [loadedCount, setCount]      = useState(0);
   const [error,       setError]      = useState(null);
   const [tracked,     setTracked]    = useState(new Set());
@@ -29,10 +29,12 @@ export default function Dashboard() {
   const [selected,    setSelected]   = useState(null);
   const [banner,      setBanner]     = useState('');
 
+  // Redirect to login if no token
   useEffect(() => {
     if (!token) navigate('/login');
   }, [token, navigate]);
 
+  // Load this user's tracked set
   useEffect(() => {
     if (token) {
       fetchTracked(token)
@@ -41,15 +43,21 @@ export default function Dashboard() {
     }
   }, [token]);
 
+  // Load profiles for TOP15 (only once; we assume names/logos rarely change)
   useEffect(() => {
     (async () => {
       const map = {};
       await Promise.all(
         TOP15.map(async sym => {
           try {
-            map[sym] = await fetchProfile(sym);
-          } catch {
-            map[sym] = { name: SYMBOL_NAME_MAP[sym] || sym, logo: '' };
+            const p = await fetchProfile(sym);
+            map[sym] = p;
+          } catch (e) {
+            console.error(`Profile error for ${sym}:`, e);
+            map[sym] = {
+              name: SYMBOL_NAME_MAP[sym] || sym,
+              logo: ''
+            };
           }
         })
       );
@@ -57,37 +65,38 @@ export default function Dashboard() {
     })();
   }, []);
 
-  const loadQuotes = async () => {
+  // Helper to fetch cached quotes from our server
+  const fetchCachedQuotes = async () => {
     setError(null);
-    setQuotes([]);
-    setCount(0);
-    const results = [];
-    const chunkSize = 30;
-    for (let i = 0; i < TOP15.length; i += chunkSize) {
-      const slice = TOP15.slice(i, i + chunkSize);
-      const chunkResults = await Promise.all(
-        slice.map(sym => fetchQuote(sym).catch(() => null))
-      );
-      chunkResults.forEach(q => q && results.push(q));
-      setCount(c => c + chunkResults.filter(q => q).length);
-      if (i + chunkSize < TOP15.length) {
-        await new Promise(r => setTimeout(r, 1000));
+    try {
+      const res = await fetch('/quotes');
+      if (!res.ok) {
+        throw new Error(`Server returned ${res.status}`);
       }
-    }
-    setQuotes(results);
-    if (!selected && results.length) {
-      setSelected(TOP15[0]);
+      const data = await res.json();
+      // data.quotes is an array of { symbol, c, pc, h, l, o, t }
+      const validQuotes = data.quotes.filter(q => q !== null);
+      setQuotes(validQuotes);
+      setCount(validQuotes.length);
+      if (!selected && validQuotes.length > 0) {
+        setSelected(validQuotes[0].symbol);
+      }
+    } catch (err) {
+      console.error('Error fetching cached quotes:', err);
+      setError(err.message);
     }
   };
 
+  // On mount, fetch once, then poll every 2 minutes
   useEffect(() => {
-    loadQuotes();
-    const id = setInterval(loadQuotes, 10 * 60 * 1000);
+    fetchCachedQuotes();
+    const id = setInterval(fetchCachedQuotes, 2 * 60 * 1000);
     return () => clearInterval(id);
-  }, []); // eslint-disable-line
+  }, [selected]);
 
+  // Combine “quote” + “profile” into a single data array
   const data = quotes.map((q, i) => {
-    const sym  = TOP15[i];
+    const sym  = q.symbol;              // TOP15[i] if you prefer, but q.symbol is explicit
     const prof = profiles[sym] || {};
     return {
       symbol:    sym,
@@ -102,6 +111,7 @@ export default function Dashboard() {
     };
   });
 
+  // Toggle tracked on server and update banner
   const handleToggle = async sym => {
     try {
       const updated = await toggleTracked(sym, token);
@@ -109,16 +119,18 @@ export default function Dashboard() {
       const action = updated.includes(sym) ? 'added to' : 'removed from';
       setBanner(`${sym} ${action} tracked`);
       setTimeout(() => setBanner(''), 2000);
-    } catch {
-      /* ignore */
+    } catch (e) {
+      console.error(e);
     }
   };
 
+  // Logout clears token and returns to landing
   const handleLogout = () => {
     localStorage.removeItem('token');
     navigate('/');
   };
 
+  // Apply filter & search
   const filtered = data.filter(item => {
     if (filter === 'tracked'   && !tracked.has(item.symbol)) return false;
     if (filter === 'untracked' &&  tracked.has(item.symbol)) return false;
@@ -163,7 +175,6 @@ export default function Dashboard() {
 
       <div className="dashboard__detail">
         <StockDetail data={data.find(d => d.symbol === selected)} />
-        {/* Footer moved inside the detail section, now centered */}
         <Footer className="footer--dashboard" />
       </div>
     </div>

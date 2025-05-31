@@ -6,14 +6,14 @@ export default defineConfig({
   server: {
     port: 3000,
     proxy: {
-      // Proxy Finnhub calls through /api/v1 to avoid CORS
+      // Proxy Finnhub calls for quotes/profile lookups the client used to do
       '/api/v1': {
         target: 'https://finnhub.io',
         changeOrigin: true,
         secure: true,
-        rewrite: (path) => path.replace(/^\/api\/v1/, '/api/v1')
+        rewrite: path => path.replace(/^\/api\/v1/, '/api/v1')
       },
-      // Proxy our auth routes to the Express backend
+      // Proxy our auth and tracked routes to Express
       '/auth': {
         target: 'http://localhost:5000',
         changeOrigin: true
@@ -22,8 +22,13 @@ export default defineConfig({
         target: 'http://localhost:5000',
         changeOrigin: true
       },
-      // Proxy /quotes to the Express backend’s cached‐quotes endpoint
+      // NEW: proxy /quotes → Express server /quotes
       '/quotes': {
+        target: 'http://localhost:5000',
+        changeOrigin: true
+      },
+      // NEW: proxy /profiles → Express server /profiles
+      '/profiles': {
         target: 'http://localhost:5000',
         changeOrigin: true
       }

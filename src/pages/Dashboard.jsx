@@ -1,10 +1,12 @@
 // src/pages/Dashboard.jsx
+
 import React, { useState, useEffect } from 'react';
 import {
-  fetchProfile,
+  fetchAllProfiles,
+  fetchCachedQuotes,
   fetchTracked,
   toggleTracked
-} from '../api'; // note: no more fetchQuote
+} from '../api';
 import { TOP15, SYMBOL_NAME_MAP } from '../symbols';
 import { useNavigate } from 'react-router-dom';
 import SearchBar from '../components/SearchBar';
@@ -19,8 +21,10 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
 
+  // profiles: { symbol: { name, logo } }
   const [profiles,    setProfiles]   = useState({});
-  const [quotes,      setQuotes]     = useState([]);      // now holds array of { symbol, c, pc, h, l, o, t }
+  // quotes: [ { symbol, c, pc, h, l, o, t } ]
+  const [quotes,      setQuotes]     = useState([]);
   const [loadedCount, setCount]      = useState(0);
   const [error,       setError]      = useState(null);
   const [tracked,     setTracked]    = useState(new Set());
@@ -29,12 +33,14 @@ export default function Dashboard() {
   const [selected,    setSelected]   = useState(null);
   const [banner,      setBanner]     = useState('');
 
-  // Redirect to login if no token
+  // 1) Redirect to login if no token
   useEffect(() => {
-    if (!token) navigate('/login');
+    if (!token) {
+      navigate('/login');
+    }
   }, [token, navigate]);
 
-  // Load this user's tracked set
+  // 2) Load this user's tracked set once (no polling needed)
   useEffect(() => {
     if (token) {
       fetchTracked(token)
@@ -43,60 +49,60 @@ export default function Dashboard() {
     }
   }, [token]);
 
-  // Load profiles for TOP15 (only once; we assume names/logos rarely change)
+  // 3) Poll for profiles every 2 minutes (and once immediately)
   useEffect(() => {
-    (async () => {
-      const map = {};
-      await Promise.all(
-        TOP15.map(async sym => {
-          try {
-            const p = await fetchProfile(sym);
-            map[sym] = p;
-          } catch (e) {
-            console.error(`Profile error for ${sym}:`, e);
-            map[sym] = {
-              name: SYMBOL_NAME_MAP[sym] || sym,
-              logo: ''
-            };
-          }
-        })
-      );
-      setProfiles(map);
-    })();
+    const loadProfiles = async () => {
+      try {
+        const profMap = await fetchAllProfiles();
+        setProfiles(profMap);
+      } catch (err) {
+        console.error('Error loading cached profiles:', err);
+        // fallback: if cachedProfiles fails, use SYMBOL_NAME_MAP, no logos
+        const fallback = {};
+        TOP15.forEach(sym => {
+          fallback[sym] = { name: SYMBOL_NAME_MAP[sym] || sym, logo: '' };
+        });
+        setProfiles(fallback);
+      }
+    };
+
+    // Fetch once immediately
+    loadProfiles();
+    // Then every 2 minutes
+    const profInterval = setInterval(loadProfiles, 2 * 60 * 1000);
+    return () => clearInterval(profInterval);
   }, []);
 
-  // Helper to fetch cached quotes from our server
-  const fetchCachedQuotes = async () => {
-    setError(null);
-    try {
-      const res = await fetch('/quotes');
-      if (!res.ok) {
-        throw new Error(`Server returned ${res.status}`);
-      }
-      const data = await res.json();
-      // data.quotes is an array of { symbol, c, pc, h, l, o, t }
-      const validQuotes = data.quotes.filter(q => q !== null);
-      setQuotes(validQuotes);
-      setCount(validQuotes.length);
-      if (!selected && validQuotes.length > 0) {
-        setSelected(validQuotes[0].symbol);
-      }
-    } catch (err) {
-      console.error('Error fetching cached quotes:', err);
-      setError(err.message);
-    }
-  };
-
-  // On mount, fetch once, then poll every 2 minutes
+  // 4) Poll for quotes every 2 minutes (and once immediately)
   useEffect(() => {
-    fetchCachedQuotes();
-    const id = setInterval(fetchCachedQuotes, 2 * 60 * 1000);
-    return () => clearInterval(id);
+    const loadQuotes = async () => {
+      setError(null);
+      try {
+        const rawQuotes = await fetchCachedQuotes();
+        const validQuotes = rawQuotes.filter(q => q !== null);
+        setQuotes(validQuotes);
+        setCount(validQuotes.length);
+
+        // If nothing selected yet, pick first symbol
+        if (!selected && validQuotes.length > 0) {
+          setSelected(validQuotes[0].symbol);
+        }
+      } catch (err) {
+        console.error('Error fetching cached quotes:', err);
+        setError(err.message);
+      }
+    };
+
+    // Fetch once immediately
+    loadQuotes();
+    // Then every 2 minutes
+    const quoteInterval = setInterval(loadQuotes, 2 * 60 * 1000);
+    return () => clearInterval(quoteInterval);
   }, [selected]);
 
-  // Combine “quote” + “profile” into a single data array
-  const data = quotes.map((q, i) => {
-    const sym  = q.symbol;              // TOP15[i] if you prefer, but q.symbol is explicit
+  // 5) Combine quotes + profiles into data array
+  const data = quotes.map((q) => {
+    const sym  = q.symbol;
     const prof = profiles[sym] || {};
     return {
       symbol:    sym,
@@ -111,7 +117,7 @@ export default function Dashboard() {
     };
   });
 
-  // Toggle tracked on server and update banner
+  // 6) Toggle tracked on server and show banner
   const handleToggle = async sym => {
     try {
       const updated = await toggleTracked(sym, token);
@@ -124,13 +130,13 @@ export default function Dashboard() {
     }
   };
 
-  // Logout clears token and returns to landing
+  // 7) Logout clears token and navigates to landing
   const handleLogout = () => {
     localStorage.removeItem('token');
     navigate('/');
   };
 
-  // Apply filter & search
+  // 8) Filter & search logic
   const filtered = data.filter(item => {
     if (filter === 'tracked'   && !tracked.has(item.symbol)) return false;
     if (filter === 'untracked' &&  tracked.has(item.symbol)) return false;
@@ -142,6 +148,7 @@ export default function Dashboard() {
     return true;
   });
 
+  // 9) Render loading, error, or dashboard layout
   if (error) {
     return <div className="dashboard__error">Error: {error}</div>;
   }
@@ -155,10 +162,12 @@ export default function Dashboard() {
 
   return (
     <div className="dashboard">
+      {/* Logout button */}
       <button className="logout-button" onClick={handleLogout}>
         Logout
       </button>
 
+      {/* Tracking banner */}
       {banner && <TrackingBanner message={banner} />}
 
       <div className="dashboard__sidebar">

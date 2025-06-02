@@ -1,4 +1,4 @@
-# MyStockTracker
+# ApexStox
 
 [Check It Out!](https://shantnukaushal.github.io/ApexStox/)
 

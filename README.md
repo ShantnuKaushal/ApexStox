@@ -1,6 +1,10 @@
-# ApexStox
+# MyStockTracker
+
+[Check It Out!](https://shantnukaushal.github.io/ApexStox/)
 
 ApexStox is a full‐stack application that lets users sign up, log in, and monitor the top 15 public companies by market cap in real time. Each user can search, filter, and “track” favorites; all tracked data is saved per account.
+
+> **Note:** The backend may take a few seconds to spin up when first visiting the site. Please allow a moment for the backend to load before signing up and accessing the dashboard.
 
 ## Main Technologies
 
@@ -36,5 +40,3 @@ ApexStox is a full‐stack application that lets users sign up, log in, and moni
 - **Responsive & Modern UI**  
   - CSS animations, gradients, and custom theming for a polished look  
   - Adaptable layouts for desktop and mobile
-
----
